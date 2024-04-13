@@ -1,10 +1,14 @@
 package com.example.Algoritms1;
 
+
+
+import java.util.Arrays;
+
 public class StringListImpl implements StringList {
 
 
 
-    private final String[] storage;
+    private String[] storage;
 
 
     private int size;
@@ -31,14 +35,14 @@ public class StringListImpl implements StringList {
     @Override
 
     public String add1(String item) {
-        validateSize();
+        grow2 ();
         validateItem(item);
         storage[size++] = item;
         return item;
     }
     @Override
     public String add2(int index, String item) {
-        validateSize();
+        grow2 ();
         validateItem(item);
         validateIndex(index);
         if (index == size) {
@@ -174,13 +178,10 @@ public class StringListImpl implements StringList {
 
     @Override
 
-
     public int indexOf(String item) {
-
 
         for (int i = 0; i < size; i++) {
 
-
             if(storage[i].equals(item)){
 
 
@@ -188,9 +189,7 @@ public class StringListImpl implements StringList {
 
             }
 
-
         }
-
 
 
         return -1;
@@ -200,16 +199,12 @@ public class StringListImpl implements StringList {
 
 
     @Override
-
 
     public int lastIndexOf(String item) {
 
-
         for (int i = size-1 ; i >=0 ; i--) {
 
-
             if(storage[i].equals(item)){
-
 
                 return i;
 
@@ -218,7 +213,6 @@ public class StringListImpl implements StringList {
 
         }
 
-
         return -1;
 
     }
@@ -226,15 +220,7 @@ public class StringListImpl implements StringList {
 
 
     @Override
-
-
     public String get(int index) {
-
-
-        validateIndex(index);
-
-
-
 
         return storage[index];
     }
@@ -242,93 +228,116 @@ public class StringListImpl implements StringList {
 
 
     @Override
-
-
     public boolean equals(StringList otherList) {
 
-
-
         return Arrays.equals(this.toArray(),  otherList.toArray() ) ;
-
-
     }
-
-
-
     @Override
-
-
     public int size() {
         return 0;
     }
 
-
-
     @Override
-
     public boolean isEmpty() {
-
-
-
-        return size == 0;
-
+        return false ;
     }
 
-
-
     @Override
-
-
     public void clear() {
 
-
-
-        size = 0;
-
-
     }
 
+    @Override
+    public void sort2(Integer[]arr) {
+        quickSort(arr, 0, arr.length - 1);
+    }
+    @Override
+    public void quickSort(Integer [] arr, int begin, int end){
+        if(begin<end){
+            int partitionIndex=partition(arr,begin,end);
+            quickSort(arr,begin,partitionIndex-1);
+            quickSort(arr,partitionIndex + 1, end);
+        }
+    }
+
+    @Override
+    public int partition(Integer[] arr, int begin, int end) {
+        int pivot = arr[end];
+        int i = (begin - 1);
+        for (int j = begin; j < end; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swapElements(arr, i, j);
+            }
+        }
+
+
+    swapElements(arr, i + 1, end);
+         return i + 1;
+                 }
+@Override
+public void swapElements(Integer[] arr, int i1, int i2) {
+
+        int temp = arr[i1];
+
+        arr[i1]=arr[i2];
+
+        arr[i2]=temp;
+
+        }
+
+    @Override
+    public  String[] toArray() {
+        return Arrays.copyOf(storage,size);
+    }
+
+    @Override
+    public void sort(Integer[] arr) {
+
+    }
 
 
     @Override
+    public  void grow() {
+        storage = Arrays.copyOf(storage, size / 2);
 
-
-    public  String[] toArray() {
-
-
-
-        return Arrays.copyOf(storage,size);
 
     }
 
+    @Override
+    public void printArray() {
+
+   }
 
 
 
 
-    private   void validateItem(String item){
 
+    private   void validateItem(String item) {
 
-        if(item==null){
-
+        if (item == null) {
 
             throw new NullItemException();
 
         }
 
+
     }
 
-    private void validateSize(){
+    @Override
+
+    public void grow2 (){
         if(size==storage.length){
-            throw new  NoFreeCellsArrayIsFullException();
+
+            grow();
         }
+
     }
 
     private void validateIndex(int index){
         if(index<0|| index> size){
             throw new IndexValueIsInvalidException();
         }
-    }
-    private void sort(int []arr) {
     }
 
 }
