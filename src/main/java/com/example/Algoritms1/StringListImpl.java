@@ -239,7 +239,7 @@ public class StringListImpl implements StringList {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return false ;
     }
 
     @Override
